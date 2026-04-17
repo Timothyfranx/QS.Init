@@ -2,74 +2,41 @@
 
 @theme {
   --color-primary: #FF4F00;
-  --color-background: #020202;
-  --color-card: #080808;
-  --color-border: rgba(255, 79, 0, 0.2);
+  --color-bg-deep: #000000;
+  --color-bg-main: #050505;
+  --color-card: #0A0A0A;
+  --color-border: rgba(255, 79, 0, 0.3);
   
-  --color-text-main: #FFFFFF;
-  --color-text-muted: #888888;
-
   --font-sans: "Geist", sans-serif;
   --font-mono: "Geist Mono", monospace;
 }
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* RESET & BASE */
 @layer base {
-  :root {
-    --background: #ffffff;
-    --foreground: #020202;
-  }
-
-  .dark {
-    --background: #020202;
-    --foreground: #ffffff;
-  }
-
   body {
-    @apply bg-background text-foreground selection:bg-primary selection:text-white antialiased;
-    font-feature-settings: "ss01", "ss03", "cv08", "cv11";
+    @apply bg-[#050505] text-white antialiased selection:bg-primary;
   }
 }
 
-/* INDUSTRIAL UTILITIES */
 @layer utilities {
   .industrial-grid {
-    background-size: 60px 60px;
+    background-size: 50px 50px;
     background-image: 
-      linear-gradient(to right, rgba(255, 79, 0, 0.07) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 79, 0, 0.07) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 79, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 79, 0, 0.05) 1px, transparent 1px);
   }
 
-  .glass-sidebar {
-    @apply bg-black/95 backdrop-blur-xl border-r-2 border-primary/30 shadow-[10px_0_30px_rgba(255,79,0,0.05)];
+  .sidebar-glow {
+    @apply bg-black border-r-2 border-primary/40 shadow-[10px_0_40px_rgba(255,79,0,0.1)];
   }
 
-  .btn-industrial {
-    @apply px-8 py-3 bg-primary text-white font-black uppercase tracking-widest 
-           hover:scale-[1.02] active:scale-[0.98] transition-all 
-           disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
-           dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)];
+  .card-elite {
+    @apply bg-[#0A0A0A] border-2 border-primary/10 p-8 relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(255,79,0,0.05)];
   }
 
-  .card-industrial {
-    @apply bg-slate-900/40 border-2 border-primary/10 p-6 relative overflow-hidden backdrop-blur-sm
-           hover:border-primary/40 transition-colors;
+  .btn-elite {
+    @apply px-10 py-4 bg-primary text-white font-black uppercase tracking-[0.2em] italic
+           hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[6px_6px_0px_0px_#000000];
   }
-
-  .stroke-text {
-    -webkit-text-stroke: 1px currentColor;
-    color: transparent;
-  }
-}
-
-* {
-  box-sizing: border-box;
-}
-
-main {
-  @apply relative w-full overflow-x-hidden;
 }
 
 h1, h2, h3 {
