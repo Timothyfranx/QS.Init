@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useInterwovenKit } from '@initia/interwovenkit-react'
-import { ArrowRight, ChevronRight, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, ChevronRight, Zap, Shield, BarChart3 } from 'lucide-react'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Logo } from '@/components/Logo'
 
@@ -28,151 +28,137 @@ export default function LandingPageContent() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-[#020617] text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-500">
+    <div className="flex flex-col min-h-screen industrial-grid bg-white dark:bg-black transition-colors duration-500">
       {/* HEADER */}
-      <nav className="fixed top-0 left-0 right-0 z-[999] h-20 bg-white/95 dark:bg-slate-950/95 border-b border-slate-200 dark:border-slate-800 backdrop-blur-sm">
+      <nav className="fixed top-0 left-0 right-0 z-[100] h-20 glass border-b-2 border-primary/20">
         <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-6">
-          <div className="flex items-center gap-3">
-            <Logo className="text-[#FF4F00]" size={32} />
-            <span className="text-xl font-black uppercase italic tracking-tighter">QS.INIT</span>
+          <div className="flex items-center gap-4">
+            <Logo className="text-primary animate-pulse" size={36} />
+            <div className="flex flex-col">
+              <span className="text-2xl font-black uppercase italic tracking-tighter leading-none">QS.INIT</span>
+              <span className="text-[8px] font-bold uppercase tracking-[0.5em] text-primary">Interwoven Settlement</span>
+            </div>
           </div>
           <div className="flex items-center gap-6">
             <ThemeToggle />
             <button 
               onClick={handleLaunch}
-              className="px-6 py-2.5 bg-[#FF4F00] text-white text-[10px] font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg"
+              className="px-6 py-2 border-2 border-primary text-primary text-[10px] font-black uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all"
             >
-              {isConnected ? 'Dashboard' : 'Launch App'}
+              {isConnected ? 'Dashboard' : 'Launch'}
             </button>
           </div>
         </div>
       </nav>
 
-      {/* MAIN BODY - Forced Vertical Separation */}
-      <main className="flex flex-col gap-32 pt-40 pb-40">
-        
-        {/* HERO SECTION */}
-        <section className="w-full max-w-7xl mx-auto px-6">
-          <div className="mb-12">
-            <span className="bg-[#FF4F00] text-white px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.4em] italic">
-              Social Settlement Layer v1.0
-            </span>
-          </div>
+      {/* HERO SECTION */}
+      <main className="flex-grow flex flex-col pt-40 pb-20 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full flex flex-col gap-12 lg:gap-24">
           
-          <div className="flex flex-col mb-20">
-            <h1 
-              className="text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-slate-900 dark:text-white"
-              style={{ lineHeight: '1.05', marginBottom: '0.1em' }}
-            >
-              SPLIT BILLS
-            </h1>
-            <h1 
-              className="text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter text-[#FF4F00]"
-              style={{ lineHeight: '1.05' }}
-            >
-              NOT CHAINS
-            </h1>
+          {/* BIG TEXT BLOCK */}
+          <div className="flex flex-col gap-2 relative">
+             {/* THE "FORGOTTEN" ACCENT CODE */}
+             <div className="absolute -top-12 -left-4 w-20 h-2 bg-primary"></div>
+             
+             <h1 className="text-6xl md:text-8xl lg:text-[7rem] font-black uppercase italic leading-[0.9] tracking-[-0.05em] text-slate-900 dark:text-white">
+               Split bills <br />
+               <span className="text-primary stroke-text">Not chains</span>
+             </h1>
+
+             <div className="max-w-xl mt-8 p-8 border-l-4 border-primary bg-slate-50 dark:bg-slate-900/50">
+               <p className="text-xl md:text-2xl font-bold leading-tight mb-4">
+                 Sign up with <span className="text-primary">Google</span> or <span className="text-primary">X</span>. No seed phrases, no jargon.
+               </p>
+               <p className="text-slate-500 dark:text-slate-400 font-medium">
+                 QS.INIT automatically aggregates your scattered balances across the Interwoven World to settle debts in one click.
+               </p>
+             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-             <div className="lg:col-span-8 border-l-8 border-[#FF4F00] pl-10 py-4">
-                <p className="text-2xl md:text-4xl font-bold leading-tight text-slate-800 dark:text-slate-200 mb-8 max-w-2xl">
-                  Sign up with <span className="text-[#FF4F00]">Google</span> or <span className="text-[#FF4F00]">X</span>. No seed phrases, no jargon.
-                </p>
-                <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 leading-relaxed max-w-xl">
-                  QS.INIT automatically aggregates your scattered balances across the Interwoven World to settle debts in one click.
-                </p>
-             </div>
-
-             <div className="lg:col-span-4 flex flex-col gap-8">
-                <button 
-                  onClick={handleLaunch}
-                  className="w-full h-24 bg-slate-900 dark:bg-white text-white dark:text-slate-950 text-2xl font-black uppercase tracking-[0.2em] flex items-center justify-between px-10 shadow-2xl hover:bg-[#FF4F00] hover:text-white dark:hover:bg-[#FF4F00] dark:hover:text-white transition-all active:scale-[0.98] group"
-                >
-                  ENTER <ArrowRight size={40} strokeWidth={3} className="group-hover:translate-x-2 transition-transform" />
-                </button>
-                
-                <div className="flex flex-wrap gap-6 justify-center lg:justify-start opacity-60">
-                   {['INTERWOVEN', 'MINIEVM', 'NO GAS'].map(tag => (
-                     <div key={tag} className="flex items-center gap-2 text-[10px] font-black tracking-widest uppercase">
-                       <CheckCircle2 size={14} className="text-[#FF4F00]" /> {tag}
-                     </div>
-                   ))}
+          {/* CTAs & STATS */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+             <button 
+               onClick={handleLaunch}
+               className="btn-industrial col-span-1 md:col-span-2 flex items-center justify-between h-24 text-2xl"
+             >
+               Enter App <ArrowRight size={36} strokeWidth={3} />
+             </button>
+             
+             <div className="bg-primary p-6 flex flex-col justify-center text-white">
+                <span className="text-xs font-black uppercase tracking-widest opacity-80 mb-2">Network Status</span>
+                <div className="flex items-center gap-2">
+                   <div className="w-2 h-2 bg-white animate-ping rounded-full"></div>
+                   <span className="text-xl font-black uppercase tracking-tighter">INITIATION-2 LIVE</span>
                 </div>
              </div>
           </div>
-        </section>
 
-        {/* SPECS SECTION */}
-        <section className="w-full max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            { t: "SIMPLE", d: "Zero blockchain jargon. If you can use Venmo, you can use QS.INIT. We hide the complexity." },
-            { t: "AGGREGATED", d: "Our AI Sweeper finds your balances across Move, Wasm, and EVM rollups automatically." },
-            { t: "SECURE", d: "Session Keys eliminate wallet signature spam. Authorize once, settle everything." }
-          ].map((item, i) => (
-            <div key={i} className="group bg-slate-50 dark:bg-slate-900/40 p-12 border border-slate-100 dark:border-slate-800 hover:border-[#FF4F00] transition-all">
-               <span className="text-[#FF4F00] font-black text-xs tracking-widest block mb-8">0{i+1} — SPECS</span>
-               <h3 className="text-3xl font-black uppercase italic mb-6">{item.t}</h3>
-               <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed text-lg">{item.d}</p>
-            </div>
-          ))}
-        </section>
-
-        {/* MISSION SECTION */}
-        <section className="w-full bg-slate-950 py-40">
-           <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-24 items-center">
-              <div className="flex-1 space-y-12">
-                 <h2 className="text-6xl md:text-8xl font-black uppercase text-white tracking-tighter leading-[0.9]">
-                    BUILT ON <br /> <span className="text-[#FF4F00]">INITIA</span>
-                 </h2>
-                 <p className="text-xl md:text-2xl text-slate-300 font-bold max-w-lg leading-snug">
-                    The Interwoven Stack is the only engine capable of true social settlement.
-                 </p>
-                 <div className="flex flex-wrap gap-8 pt-6 opacity-30 text-white font-black tracking-tighter uppercase text-sm italic">
-                    <span>MINI-EVM</span>
-                    <span>MINI-MOVE</span>
-                    <span>MINI-WASM</span>
-                    <span>OMNI-USDC</span>
-                 </div>
+          {/* FEATURE TILES */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            {[
+              { icon: Zap, t: "Instant", d: "Zero-latency bridging across every Initia Mini-Rollup." },
+              { icon: Shield, t: "Secure", d: "Session Keys eliminate signature fatigue and wallet spam." },
+              { icon: BarChart3, t: "Unified", d: "View your total net worth across Move, Wasm, and EVM." }
+            ].map((f, i) => (
+              <div key={i} className="card-industrial group hover:border-primary transition-colors">
+                <f.icon className="text-primary mb-6 group-hover:scale-110 transition-transform" size={40} />
+                <h3 className="text-2xl font-black mb-3 italic">{f.t}</h3>
+                <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">{f.d}</p>
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-primary/5 group-hover:bg-primary/20 transition-colors"></div>
               </div>
-              <div className="flex-1 flex justify-center lg:justify-end">
-                 <div className="p-16 md:p-20 border-8 border-[#FF4F00] bg-slate-900 shadow-2xl relative">
-                    <Logo className="text-[#FF4F00] mb-12" size={100} />
-                    <div className="text-6xl md:text-7xl font-black italic tracking-tighter text-[#FF4F00] uppercase">KARMA</div>
-                    <div className="mt-4 text-[10px] font-black uppercase tracking-[0.5em] text-white/50">Verified Network Identity</div>
-                    <div className="absolute top-0 right-0 h-4 w-4 bg-[#FF4F00]"></div>
-                    <div className="absolute bottom-0 left-0 h-4 w-4 bg-[#FF4F00]"></div>
-                 </div>
-              </div>
-           </div>
-        </section>
+            ))}
+          </div>
 
-        {/* READY CTA */}
-        <section className="w-full max-w-5xl mx-auto px-6 text-center">
-           <h2 className="text-8xl md:text-[10rem] font-black uppercase italic tracking-tighter mb-20 text-slate-900 dark:text-white leading-none">READY?</h2>
-           <button 
-             onClick={handleLaunch}
-             className="w-full h-32 bg-[#FF4F00] text-white text-4xl font-black uppercase tracking-[0.1em] shadow-[0_20px_50px_rgba(255,79,0,0.3)] hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-8"
-           >
-             LAUNCH DASHBOARD <ChevronRight size={48} strokeWidth={4} />
-           </button>
-           <p className="mt-12 text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">Join the social layer of the interwoven world</p>
-        </section>
+          {/* MISSION LOGO SECTION */}
+          <div className="w-full bg-slate-900 dark:bg-slate-900/40 border-2 border-primary/20 p-12 lg:p-24 relative overflow-hidden">
+             {/* THE BACKGROUND "FORGOTTEN" TEXT */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-black uppercase italic opacity-[0.03] pointer-events-none select-none">
+                INTERWOVEN
+             </div>
+             
+             <div className="relative z-10 flex flex-col lg:flex-row items-center gap-20">
+                <div className="flex-1 space-y-8">
+                   <h2 className="text-5xl md:text-7xl font-black text-white leading-none tracking-tighter uppercase italic">
+                      BUILT FOR <br /> <span className="text-primary">INITIA</span>
+                   </h2>
+                   <p className="text-xl text-slate-300 font-bold max-w-lg">
+                      Leveraging the Interwoven Stack to eliminate the barriers between chains. No manual bridging. No switching networks. Just instant payments.
+                   </p>
+                   <div className="flex gap-4">
+                      <div className="h-1 w-20 bg-primary"></div>
+                      <div className="h-1 w-10 bg-primary/30"></div>
+                      <div className="h-1 w-5 bg-primary/10"></div>
+                   </div>
+                </div>
+                <div className="flex-shrink-0">
+                   <div className="w-64 h-64 md:w-80 md:h-80 border-8 border-primary flex items-center justify-center bg-black shadow-[0_0_80px_rgba(255,79,0,0.2)]">
+                      <div className="flex flex-col items-center">
+                         <Logo className="text-primary mb-6" size={120} />
+                         <span className="text-4xl font-black text-primary italic tracking-tighter">KARMA</span>
+                         <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white mt-2">Verified Social Layer</span>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
       </main>
 
       {/* FOOTER */}
-      <footer className="w-full border-t border-slate-200 dark:border-slate-800 py-16 bg-slate-50 dark:bg-slate-950">
+      <footer className="border-t-2 border-primary/10 py-16 bg-slate-50 dark:bg-black/80">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12">
-           <div className="flex items-center gap-4">
-             <div className="p-2 bg-[#FF4F00]"><Logo size={24} className="text-white" /></div>
-             <span className="font-black uppercase tracking-tighter text-lg">QS.INIT</span>
-           </div>
-           <div className="flex gap-12 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
-              <span className="hover:text-[#FF4F00] cursor-pointer transition">Documentation</span>
-              <span className="hover:text-[#FF4F00] cursor-pointer transition">Github</span>
-              <span className="hover:text-[#FF4F00] cursor-pointer transition">Security</span>
-           </div>
-           <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic">© 2026 INITIATE HACKATHON</p>
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-primary flex items-center justify-center">
+              <Logo className="text-white" size={24} />
+            </div>
+            <span className="text-xl font-black uppercase italic tracking-tighter">QS.INIT</span>
+          </div>
+          <div className="flex gap-12 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+             <span className="hover:text-primary cursor-pointer transition">Docs</span>
+             <span className="hover:text-primary cursor-pointer transition">Github</span>
+             <span className="hover:text-primary cursor-pointer transition">Security</span>
+          </div>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 italic">© 2026 INITIATE HACKATHON // BUILT BY OMNI DIVISION</p>
         </div>
       </footer>
     </div>

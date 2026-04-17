@@ -2,103 +2,98 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { 
-  ArrowLeft, 
-  Search, 
-  QrCode,
-  Zap,
-  ChevronRight
-} from 'lucide-react'
-import { ThemeToggle } from '@/components/ThemeToggle'
+import { useInterwovenKit } from '@initia/interwovenkit-react'
+import { Search, Users, ArrowRight, ShieldCheck } from 'lucide-react'
 import { Logo } from '@/components/Logo'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export default function JoinContent() {
   const router = useRouter()
+  const { isConnected, openConnect } = useInterwovenKit()
   const [splitId, setSplitId] = useState('')
-  const [error, setError] = useState('')
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault()
-    if (splitId.trim().length < 3) {
-      setError('Enter a valid code')
+    if (!isConnected) {
+      openConnect()
       return
     }
-    router.push(`/split/${splitId}`)
+    if (splitId.trim()) {
+      router.push(`/split/${splitId}`)
+    }
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#050505] font-sans transition-colors">
-       <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-[#050505]/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 sm:h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <a href="/dashboard" className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg bg-slate-900 dark:bg-[#FF4F00] text-white shadow-md transition hover:scale-105 active:scale-95"><Logo size={20} /></a>
-            <span className="text-sm font-black tracking-[0.2em] uppercase text-slate-900 dark:text-white italic">Join</span>
-          </div>
-          <ThemeToggle />
+    <div className="min-h-screen bg-white dark:bg-black industrial-grid flex flex-col transition-colors duration-500">
+      {/* HEADER */}
+      <nav className="h-20 glass border-b-2 border-primary/20 flex items-center px-6">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+           <button onClick={() => router.push('/')} className="flex items-center gap-3 group">
+              <Logo className="text-primary group-hover:rotate-90 transition-transform" size={32} />
+              <span className="text-2xl font-black uppercase italic tracking-tighter">QS.INIT</span>
+           </button>
+           <div className="flex items-center gap-6">
+              <ThemeToggle />
+              <button 
+                onClick={() => router.push('/dashboard')}
+                className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary transition-colors"
+              >
+                Exit
+              </button>
+           </div>
         </div>
-      </header>
+      </nav>
 
-      <main className="mx-auto max-w-xl px-4 py-8 sm:py-24">
-        <motion.a 
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          href="/dashboard" 
-          className="group mb-8 inline-flex items-center gap-2 text-sm font-bold text-slate-400 transition hover:text-slate-900 dark:hover:text-white"
-        >
-          <ArrowLeft size={16} />
-          Back
-        </motion.a>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-none border-l-4 sm:border-l-8 border-slate-900 dark:border-[#FF4F00] bg-white dark:bg-slate-900 p-8 sm:p-12 shadow-2xl"
-        >
-          <div className="mb-12">
-            <div className="mb-6 flex h-14 w-14 items-center justify-center bg-slate-900 dark:bg-[#FF4F00] text-white shadow-lg">
-              <Search size={32} />
-            </div>
-            <h1 className="text-4xl font-black tracking-tighter text-slate-900 dark:text-white sm:text-5xl uppercase italic leading-none">Join Split</h1>
-            <p className="mt-4 text-slate-500 dark:text-slate-400 font-medium text-lg leading-relaxed">
-              Enter the invite code to settle up instantly.
-            </p>
-          </div>
-
-          <form onSubmit={handleJoin} className="space-y-8">
-            <div>
-              <label className="mb-3 block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                Invite Code
-              </label>
-              <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="e.g. 8xJ9-K2L1" 
-                  autoFocus
-                  className="w-full rounded-none border-2 border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-950/30 px-6 py-5 font-black text-2xl text-slate-900 dark:text-white placeholder:text-slate-200 dark:placeholder:text-slate-800 focus:border-slate-900 dark:focus:border-[#FF4F00] focus:bg-white dark:focus:bg-slate-950 focus:outline-none transition-all"
-                  value={splitId}
-                  onChange={e => { setSplitId(e.target.value); setError(''); }}
-                />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                   <QrCode size={24} className="text-slate-300 dark:text-slate-700 cursor-pointer hover:text-[#FF4F00] transition-colors" />
-                </div>
+      {/* CENTER CONTENT */}
+      <main className="flex-grow flex items-center justify-center p-6">
+        <div className="w-full max-w-xl">
+           <div className="card-industrial bg-white dark:bg-slate-900 shadow-2xl overflow-visible">
+              <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 bg-primary flex items-center justify-center shadow-xl">
+                 <Users className="text-white" size={40} />
               </div>
-              {error && <p className="mt-3 text-xs font-black text-red-500 uppercase tracking-widest italic">{error}</p>}
-            </div>
 
-            <button 
-              type="submit"
-              className="w-full h-20 bg-slate-900 dark:bg-[#FF4F00] text-xl font-black text-white shadow-2xl transition hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-3 uppercase tracking-widest"
-            >
-              Access Split <ChevronRight size={24} strokeWidth={3} />
-            </button>
-          </form>
-        </motion.div>
+              <div className="mt-12 text-center">
+                 <h1 className="text-4xl font-black italic mb-2">Join a Split</h1>
+                 <p className="text-sm font-medium text-slate-500 uppercase tracking-widest mb-10">Enter a settlement ID to begin</p>
+                 
+                 <form onSubmit={handleJoin} className="space-y-8">
+                    <div className="relative group">
+                       <input 
+                         type="text" 
+                         value={splitId}
+                         onChange={(e) => setSplitId(e.target.value)}
+                         placeholder="0x... or Room ID"
+                         className="w-full h-20 bg-slate-50 dark:bg-black border-2 border-slate-200 dark:border-primary/20 px-8 pt-6 font-black uppercase tracking-widest text-xl focus:border-primary outline-none transition-all placeholder:text-slate-300"
+                       />
+                       <span className="absolute left-8 top-3 text-[8px] font-black uppercase tracking-[0.3em] text-primary opacity-60">Settlement ID</span>
+                       <Search className="absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors" size={24} />
+                    </div>
+
+                    <button 
+                      type="submit"
+                      disabled={!splitId}
+                      className="btn-industrial w-full h-20 flex items-center justify-center gap-4 text-xl"
+                    >
+                      Find Group <ArrowRight size={28} strokeWidth={3} />
+                    </button>
+                 </form>
+
+                 <div className="mt-12 pt-8 border-t border-slate-100 dark:border-primary/10 flex items-center justify-center gap-8 grayscale opacity-50">
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-tighter">
+                       <ShieldCheck size={14} className="text-primary" /> Verified
+                    </div>
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-tighter">
+                       <ShieldCheck size={14} className="text-primary" /> Interwoven
+                    </div>
+                 </div>
+              </div>
+           </div>
+
+           <p className="mt-8 text-center text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">
+              Secured by the Initiation-2 Network
+           </p>
+        </div>
       </main>
-
-      <footer className="py-12 text-center">
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 italic">Safe · Simple · Social</p>
-      </footer>
     </div>
   )
 }

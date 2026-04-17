@@ -1,26 +1,71 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #FF4F00;
+  --color-background: #050505;
+  --color-card: #0A0A0A;
+  --color-border: #1A1A1A;
+  --color-text-main: #FFFFFF;
+  --color-text-muted: #666666;
+
+  --font-sans: "Geist", sans-serif;
+  --font-mono: "Geist Mono", monospace;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+/* RESET & BASE */
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #050505;
+  }
+
+  .dark {
+    --background: #050505;
+    --foreground: #ffffff;
+  }
+
+  body {
+    @apply bg-background text-foreground selection:bg-primary selection:text-white antialiased;
+    font-feature-settings: "ss01", "ss03", "cv08", "cv11";
+  }
 }
 
-.dark {
-  --background: #020617;
-  --foreground: #f8fafc;
+/* INDUSTRIAL UTILITIES */
+@layer utilities {
+  .industrial-grid {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 79, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 79, 0, 0.05) 1px, transparent 1px);
+  }
+
+  .glass {
+    @apply bg-white/80 dark:bg-black/80 backdrop-blur-md border border-white/20 dark:border-white/10;
+  }
+
+  .btn-industrial {
+    @apply px-8 py-3 bg-primary text-white font-black uppercase tracking-widest 
+           hover:scale-[1.02] active:scale-[0.98] transition-all 
+           disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
+           dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)];
+  }
+
+  .card-industrial {
+    @apply bg-card border border-border p-6 relative overflow-hidden;
+  }
 }
 
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+/* FIXING THE "BUGGY" OVERLAPS */
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+}
+
+main {
+  @apply relative w-full overflow-x-hidden;
+}
+
+h1, h2, h3 {
+  @apply tracking-tighter uppercase font-black italic;
 }
