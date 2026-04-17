@@ -1,0 +1,16 @@
+{
+  "name": "QuickSplit.INIT",
+  "description": "An autonomous cross-chain bill splitter that uses Initia's Interwoven Bridge and Session Keys to sweep 'dust' across rollups and settle group expenses in one click.",
+  "tracks": ["DeFi", "AI", "Gaming"],
+  "main_track": "DeFi",
+  "features": [
+    "Interwoven Bridge for multi-chain contributions",
+    "Auto-signing for seamless 'Dust Sweeping' background tasks",
+    "Initia Username (.init) integration for social identity",
+    "Reputation-based Karma system (Gaming Layer)"
+  ],
+  "links": {
+    "demo_video": "https://example.com/demo",
+    "deployment": "https://quicksplit.init"
+  }
+}

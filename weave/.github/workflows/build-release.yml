@@ -1,0 +1,118 @@
+name: Build Go binaries and upload release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  basic-checks:
+    name: Basic Checks
+    runs-on: ubuntu-latest
+    env:
+      GOLANGCI_LINT_VERSION: v1.62.0
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ^1.24
+
+      - name: Clear module cache
+        run: go clean -modcache
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Install golangci-lint
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@${GOLANGCI_LINT_VERSION}
+
+      - name: Run golangci-lint
+        run: make lint
+
+      - name: Run unit tests
+        run: go test -v ./...
+
+  integration-tests:
+    name: Run Integration Tests
+    needs: basic-checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ^1.24
+
+      - name: Run Integration Tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: go test -v ./... -tags=integration
+
+  build-and-upload:
+    name: Build Go binaries and upload release
+    needs: integration-tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64, arm64]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ^1.24
+
+      - name: Build binary
+        run: |
+          mkdir -p build/${{ matrix.goos }}_${{ matrix.goarch }}
+          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags "-X github.com/initia-labs/weave/cmd.Version=${{ github.ref_name }}" -o build/${{ matrix.goos }}_${{ matrix.goarch }}/weave
+
+      - name: Write version
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
+
+      - name: Create tar.gz
+        run: |
+          tar -czvf weave-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz -C build/${{ matrix.goos }}_${{ matrix.goarch }} weave
+
+      - name: Upload binary to release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: ${{ github.ref_name }}
+          draft: false
+          token: ${{ secrets.GH_RELEASE_TOKEN }}
+          files: |
+            weave-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
+
+  homebrew-release:
+    runs-on: ubuntu-latest
+    name: homebrew-release
+    needs: build-and-upload
+    steps:
+      - name: Release project to Homebrew tap
+        uses: Justintime50/homebrew-releaser@v2
+        with:
+          homebrew_owner: initia-labs
+          homebrew_tap: homebrew-tap
+          formula_folder: Formula
+          version: ${{ github.event.release.tag_name }}
+          github_token: ${{ secrets.GH_RELEASE_TOKEN }}
+          commit_owner: github-actions[bot]
+          commit_email: github-actions[bot]@users.noreply.github.com
+          install: 'bin.install "weave"'
+          test: 'assert_match version.to_s, shell_output("#{bin}/weave version")'
+          target_darwin_amd64: true
+          target_darwin_arm64: true
+          target_linux_amd64: false
+          target_linux_arm64: false
+          update_readme_table: false
+          skip_commit: false
+          debug: false
