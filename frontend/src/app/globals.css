@@ -1,14 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  /* THEME COLORS */
   --color-primary: #FF4F00;
-  --color-card: #0A0A0A;
-  --color-border: #1A1A1A;
+  --color-background: #020202;
+  --color-card: #080808;
+  --color-border: rgba(255, 79, 0, 0.2);
   
-  /* MAPPING DYNAMIC VARIABLES FOR @apply */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-text-main: #FFFFFF;
+  --color-text-muted: #888888;
 
   --font-sans: "Geist", sans-serif;
   --font-mono: "Geist Mono", monospace;
@@ -20,16 +19,15 @@
 @layer base {
   :root {
     --background: #ffffff;
-    --foreground: #050505;
+    --foreground: #020202;
   }
 
   .dark {
-    --background: #050505;
+    --background: #020202;
     --foreground: #ffffff;
   }
 
   body {
-    /* Fixed the unknown utility by ensuring background/foreground are in @theme */
     @apply bg-background text-foreground selection:bg-primary selection:text-white antialiased;
     font-feature-settings: "ss01", "ss03", "cv08", "cv11";
   }
@@ -38,14 +36,14 @@
 /* INDUSTRIAL UTILITIES */
 @layer utilities {
   .industrial-grid {
-    background-size: 40px 40px;
+    background-size: 60px 60px;
     background-image: 
-      linear-gradient(to right, rgba(255, 79, 0, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 79, 0, 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 79, 0, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 79, 0, 0.07) 1px, transparent 1px);
   }
 
-  .glass {
-    @apply bg-white/80 dark:bg-black/80 backdrop-blur-md border border-white/20 dark:border-white/10;
+  .glass-sidebar {
+    @apply bg-black/95 backdrop-blur-xl border-r-2 border-primary/30 shadow-[10px_0_30px_rgba(255,79,0,0.05)];
   }
 
   .btn-industrial {
@@ -56,10 +54,10 @@
   }
 
   .card-industrial {
-    @apply bg-card border border-border p-6 relative overflow-hidden;
+    @apply bg-slate-900/40 border-2 border-primary/10 p-6 relative overflow-hidden backdrop-blur-sm
+           hover:border-primary/40 transition-colors;
   }
 
-  /* Added a manual stroke utility for that "Forgotten" look */
   .stroke-text {
     -webkit-text-stroke: 1px currentColor;
     color: transparent;
