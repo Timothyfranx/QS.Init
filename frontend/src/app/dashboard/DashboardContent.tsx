@@ -12,7 +12,8 @@ import {
   Wallet,
   Globe,
   RefreshCw,
-  LogOut
+  LogOut,
+  Zap
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { ThemeToggle } from '@/components/ThemeToggle'
